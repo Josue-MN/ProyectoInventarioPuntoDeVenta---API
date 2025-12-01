@@ -38,16 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'LoginApp',
-    'AdminHomeApp',
-    'HomeApp',
-    'CrudEmpleadosApp',
-    'CrudProductosApp',
-    'CrudCategoriaProductoApp',
-    'CrudBodegasApp',
-    'CrudCargosApp',
-    'CrudUsuariosApp.apps.CrudusuariosappConfig',
-    'AuditoriaApp',
+    'ProInvPunDeVenAPI',
 ]
 
 MIDDLEWARE = [
