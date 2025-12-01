@@ -1,0 +1,32 @@
+{% extends 'base-form.html' %}
+<!-- Extiende la plantilla base para formularios que incluye estilos y scripts específicos para formularios -->
+
+{% block title %}Registro de empleados{% endblock %}
+<!-- Título de la página que se mostrará en la pestaña del navegador -->
+
+{% block breadcrumb %}
+    <!-- Breadcrumbs: muestran la ruta de navegación dentro del panel de administración -->
+    <li>
+        <a href="{% url 'adminhome' %}">Admin home > </a> <!-- Enlace al inicio del panel -->
+        <a href="{% url 'admin-crud-empleado' %}">Crud empleado > </a> <!-- Enlace a la sección de empleados -->
+        <a>Formulario empleado</a> <!-- Página actual sin enlace -->
+    </li>
+{% endblock %}
+
+{% block header_title %}
+    <!-- Título principal de la página y botón para volver al listado de empleados -->
+    <h1 class="header-title">REGISTRO DE EMPLEADOS</h1>
+    <a href="{% url 'admin-crud-empleado' %}"><button class="button-header" type="button">VOLVER</button></a>
+{% endblock %}
+
+{% block content %}
+    <!-- Contenido principal: formulario para registrar o actualizar empleados -->
+    <form method="POST" novalidate>
+        {% csrf_token %} <!-- Token de seguridad obligatorio en Django para prevenir CSRF -->
+        {{ form.as_div }} <!-- Renderiza automáticamente todos los campos del formulario dentro de divs -->
+        <input class="form-enviar" type="submit" value="ENVIAR"  
+               onclick="return confirm('¿Seguro que deseas enviar estos datos?')">
+        <!-- Botón para enviar el formulario con confirmación del usuario -->
+    </form>
+{% endblock %}
+

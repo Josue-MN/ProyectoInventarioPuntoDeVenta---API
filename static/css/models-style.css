@@ -1,0 +1,201 @@
+
+/*CSS UNIVERSAL PARA MODELS*/
+
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'General Sans', sans-serif;
+    background-color: #D1D5DB;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+
+/* Encabezado principal */
+header {
+    width: 87%;
+    height: 80px;
+    background-color: #2d3748;
+    color: #EBECF2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0 25px;
+    font-weight: bold;
+    position: relative;
+}
+
+.header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Tabla */
+table {
+    width: 87%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Encabezado de la tabla */
+thead {
+    background-color: #252f3f;
+    color: white;
+}
+
+thead th {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Filas del cuerpo */
+tbody td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Colores alternos */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Hover */
+tbody tr:hover {
+    background-color: #dbeafe;
+    transition: 0.3s;
+}
+
+/* Estilos uniformes para todos los botones */
+button {
+    padding: 6px 12px;
+    margin: 2px;
+    background-color: #2d3748;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #4a5568;
+}
+
+.button-header {
+    background-color: #4a5568;
+}
+
+.button-header:hover {
+    background-color: #788190;
+}
+
+
+.no-registros {
+    width: 87%;
+    height: 80px;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+/* ========================================= */
+/* ESTILO GLOBAL PARA BREADCRUMBS Y MENSAJES */
+/* ========================================= */
+
+/* Breadcrumbs (nav > ol > li > a) */
+nav {
+    width: 87%;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1f2937;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+}
+
+nav ol {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+nav li {
+    display: inline;
+}
+
+nav a {
+    text-decoration: none;
+    color: #374151;
+    transition: 0.2s ease;
+}
+
+nav a:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+/* Mensajes de feedback */
+section {
+    width: 87%;
+    margin: 10px auto 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0f2fe;
+    border-left: 6px solid #2563eb;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+section message {
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+}
+
+.btn-disabled {
+    opacity: 0.5;
+    pointer-events: none; /* evita que se pueda clicar */
+}
+
+

@@ -1,0 +1,249 @@
+/* ========================================================= */
+/*                ESTILO AUDITORÍAS (CRUD STYLE)            */
+/* ========================================================= */
+
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'General Sans', sans-serif;
+    background-color: #D1D5DB;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+}
+
+/* ========================================================= */
+/*                     TÍTULO PRINCIPAL                      */
+/* ========================================================= */
+
+h1 {
+    width: 87%;
+    font-size: 35px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1f2937;
+}
+
+/* ========================================================= */
+/*                  SUBTÍTULOS DE CADA TABLA                 */
+/* ========================================================= */
+
+h2 {
+    width: 87%;
+    background-color: #2d3748;
+    color: #EBECF2;
+    padding: 12px;
+    border-radius: 10px 10px 0 0;
+    margin-top: 40px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* ========================================================= */
+/*                     TABLAS DE AUDITORÍA                   */
+/* ========================================================= */
+
+table {
+    width: 87%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    border-radius: 0 0 10px 10px;
+}
+
+thead {
+    background-color: #252f3f;
+    color: white;
+}
+
+thead th {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Filas */
+tbody td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* Filas alternas */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Hover */
+tbody tr:hover {
+    background-color: #dbeafe;
+    transition: 0.3s;
+}
+
+/* Fila "Sin registros" */
+tbody tr td[colspan] {
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #f3f4f6 !important;
+}
+
+/* ========================================================= */
+/*            OPCIONAL: ESTILO PARA FECHAS Y ACCIONES        */
+/* ========================================================= */
+
+td.fecha {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+td.accion {
+    font-weight: bold;
+    color: #1e40af;
+}
+
+/* ========================================================= */
+/*             OPCIONAL: BOTÓN GENERAL EN AUDITORÍAS         */
+/* ========================================================= */
+
+button {
+    padding: 6px 12px;
+    margin: 2px;
+    background-color: #2d3748;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #4a5568;
+}
+
+
+/* ========================================================= */
+/*                 BOTÓN VOLVER ESTILIZADO                   */
+/* ========================================================= */
+
+.button-header {
+    background-color: #2d3748;
+    color: white;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: 0.25s ease;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.25);
+}
+
+.button-header:hover {
+    background-color: #4a5568;
+    transform: translateY(-1px);
+}
+
+/* Centrar el botón */
+.btn-container {
+    width: 87%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+
+/* ========================================================= */
+/*                   TÍTULO PRINCIPAL MEJORADO               */
+/* ========================================================= */
+
+h1 {
+    width: 87%;
+    text-align: center;
+    font-size: 38px;
+    font-weight: 800;
+    color: #1f2937;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+
+
+/* ========================================================= */
+/*       CONTENEDOR FLEX PARA BOTÓN Y TÍTULO CENTRADO        */
+/* ========================================================= */
+
+.header-auditoria {
+    width: 87%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Placeholder invisible para centrar el título */
+.header-auditoria .placeholder {
+    width: 90px; /* Igual al ancho aproximado del botón */
+}
+
+
+/* ========================================================= */
+/*                  TÍTULO PRINCIPAL CENTRADO                */
+/* ========================================================= */
+
+.header-auditoria h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1f2937;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;  
+    position: relative;
+    padding-bottom: 10px;
+}
+
+
+/* BOTÓN VOLVER */
+.button-header {
+    background-color: #2d3748;
+    color: white;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: 0.25s ease;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.25);
+}
+
+.button-header:hover {
+    background-color: #4a5568;
+    transform: translateY(-1px);
+}

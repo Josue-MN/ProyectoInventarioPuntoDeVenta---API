@@ -1,0 +1,247 @@
+
+SE CREO EL PROYECTO DE INVENTARIO PUNTO DE VENTAS
+Ejecutando el siguiente comando desde la terminal:
+==> py -m django startproject InventarioPuntoDeVenta
+
+Este comando genera la estructura base del proyecto, incluyendo los archivos esenciales para la configuración inicial: manage.py, settings.py, urls.py y la carpeta del proyecto que contiene los módulos principales de Django 
+y a partir de esta estructura se configuró el entorno de trabajo, estableciendo la conexión entre los distintos componentes que serían utilizados más adelante como las aplicaciones (apps), los archivos estáticos(css y js) y las plantillas HTML
+
+SE CREARON E INTEGRARON LAS APLICACIONES (APPS)
+Una vez creado el proyecto principal, se generaron las diferentes apps individuales utilizando el comando:
+==> python manage.py startapp nombre_app
+
+Por ejemplo:
+==> python manage.py startapp crudProductos
+
+Ya que cada una de las apps creadas cumple una función específica del modelo de creacion de inventario dentro del sistema ya que las 
+principales  apps son:
+- Home: Página principal del sistema.
+- HomeAdmin: Panel administrativo para la gestión de módulos.
+- Login: Módulo encargado de la autenticación y control de acceso.
+- crudUsuarios: Módulo para la gestión de usuarios.
+- crudProductos: Módulo de administración de productos.
+- crudCategorias: Gestión de categorías de productos.
+- CrudBodegas: Control y administración de bodegas.
+- crudEmpleados: Módulo para la administración del personal.
+
+Cada aplicación fue registrada en el archivo settings.py dentro de la lista INSTALLED_APPS.
+
+3. CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS(static) Y PLANTILLAS(templates)
+Para manejar adecuadamente los archivos CSS, JavaScript y HTML se configuraron las rutas correspondientes dentro del archivo settings.py
+con su configuracion implementada:
+
+'DIRS': [os.path.join(BASE_DIR, 'templates')],
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+Con esto Django puede encontrar correctamente los recursos visuales del proyecto y las plantillas que se extienden con etiquetas como {% extends %}, {% include %} o {% load static %}.
+
+Por ejemplo:
+1.extends:
+{% extends 'base-crud.html' %}
+<!-- Hereda la estructura y el diseño general de la plantilla base para las vistas CRUD -->
+
+{% block content %}
+<!-- Define el bloque de contenido principal que se insertará en la plantilla base -->
+
+<script>
+    // Llama a la función JavaScript "regresarCrudBodega()" definida externamente (probablemente en un archivo .js)
+    // Esta función se encarga de redirigir o regresar automáticamente a la página principal del CRUD de bodegas
+    regresarCrudBodega();
+</script>
+
+{% endblock %}
+<!-- Fin del bloque de contenido -->
+
+2.Static:
+<!DOCTYPE html>
+{% load static %} <!-- Carga la etiqueta 'static' de Django para manejar archivos estáticos -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{% static 'css/forms-style.css' %}">
+    
+    <!-- Enlaza el script de JavaScript personalizado para manejar el CRUD y volver -->
+    <script src='{% static "js/crudVolver.js" %}'></script>
+    
+    <!-- Bloque de título dinámico que se puede sobrescribir en otras plantillas -->
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    
+    <!-- Barra de navegación (breadcrumbs) -->
+    <nav>
+        <ol>
+            {% block breadcrumb %}{% endblock %} <!-- Bloque dinámico para la ruta de navegación -->
+        </ol>
+    </nav>
+    
+    <!-- Sección para mostrar mensajes de feedback (éxito, error, información) -->
+    {% if messages %}
+        <section class="messages">
+            {% for message in messages %}
+                <div class="message">
+                    <h1>{{ message }}</h1> <!-- Muestra el contenido de cada mensaje -->
+                </div>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+SE CONFIGURO LAS RUTAS Y URLs
+Cada aplicación define sus propias urls, las cuales luego se incluyen en el archivo principal urls.py del proyecto mediante include().
+Por ejemplo:
+==> path('crud-usuarios/', include('crudUsuarios.urls')),
+
+Esto permite mantener una estructura modular y escalable, donde cada módulo maneja sus propias vistas y plantillas HTML.
+
+SE HA IMPLEMENTADO LOS FORMULARIOS, VISTAS Y TABLAS
+En cada módulo se implementaron formularios personalizados, tanto para registro como para edición y eliminación de datos. Estos formularios se integran con las vistas en Django y las plantillas HTML que permiten mostrar los datos de forma clara y ordenada.
+
+Ejemplo de formulario HTML en el módulo Bodegas:
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {{ form.as_div }}
+    <input class="form-enviar" type="submit" value="ENVIAR" onclick="return confirm('¿Seguro que deseas enviar estos datos?')">
+</form>
+
+** Este formulario incluye medidas de seguridad como el token CSRF y validaciones**
+
+SE USO DE JAVASCRIPT PARA CONFIRMACIONES Y VALIDACIONES
+Se implementaron múltiples scripts JavaScript para reforzar la interacción del usuario y evitar errores en la gestión de datos.
+Ejemplo:
+document.addEventListener('DOMContentLoaded', function() {
+    const botonGuardar = document.querySelector('input[name="_save"]');
+    if (botonGuardar) {
+        botonGuardar.addEventListener('click', function(e) {
+            if (!confirm('¿Seguro que deseas guardar esta edición?')) {
+                e.preventDefault();
+            }
+        });
+    }
+});
+
+SE HIZO EL USO DE FUNCIONES PERSONALIZADAS EN PLANTILLAS
+Dentro de las plantillas HTML se definieron bloques reutilizables con etiquetas de Django:
+{% extends 'base-crud.html' %}
+{% block header_title %}
+<h1 class="header-title">LISTA DE BODEGAS</h1>
+{% endblock %}
+
+Se implementaron funciones JavaScript como regresarCrudBodega(), crudVolver() y regresarAdminOrHome() para controlar la navegación.
+
+SE AGREGO LA AUTENTICACIÓN Y ROLES DE USUARIO BASICA POR FALTA DE FORANEAS
+El módulo Login valida las credenciales y diferencia entre Administrador y Bodeguero según su cargo, controlando el acceso a las distintas vistas y módulos mediante HomeAdmin.
+
+SE INTEGRACIÓN DE FORMA COMPLETA DEL CRUD
+Cada módulo cuenta con su propio CRUD completo (Crear, Leer, Actualizar, Eliminar), como por ejemplo el módulo de Bodegas con vistas de registro, detalle, actualización y eliminación.
+
+Por Ejemplo:
+def usuariosData(request):
+    usuarios = Usuarios.objects.all()
+    data = {'Usuarios' : usuarios}
+    return render(request, 'templateCrudUsuario/usuarios-models.html', data)
+
+
+#Form
+def usuariosRegistrationView(request):
+    form = forms.UsuarioRegistrationForm()
+
+    if request.method == 'POST':
+        form = forms.UsuarioRegistrationForm(request.POST)
+        if form.is_valid():
+            print("FORM ES VALIDO")
+            print("USERNAME: ", form.cleaned_data['Username'])
+            print("PASSWORD: ", form.cleaned_data['Password'])
+            print("CONFIRMAR PASSWORD: ", form.cleaned_data['ConfirmarPassword'])
+            print("CORREO ELECTRONICO: ", form.cleaned_data['CorreoElectronico'])
+            
+            form.save()
+            messages.success(request, "Usuario registrado correctamente")
+            return redirect('/adminhome/crud-usuarios')
+        else:
+            messages.error(request, "Corrige los errores en el formulario antes de continuar")
+        
+    data = {'form': form}
+    return render(request, 'templateCrudUsuario/registro-usuario.html', data)
+
+
+#Actualizar
+def actualizarUsuario(request, IdUsuarios):
+    usuario = Usuarios.objects.get(IdUsuarios=IdUsuarios)
+    form = forms.UsuarioRegistrationForm(instance=usuario)
+
+    if request.method == 'POST':
+        form = forms.UsuarioRegistrationForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuario actualizado correctamente")
+            return redirect('/adminhome/crud-usuarios/')
+        else:
+            messages.error(request, "Corrige los errores en el formulario antes de continuar")
+            
+    data = {'form': form}
+    return render(request, 'templateCrudUsuario/registro-usuario.html', data)
+
+
+#Eliminar
+def confirmarEliminar(request, IdUsuarios):
+    usuario = Usuarios.objects.get(IdUsuarios=IdUsuarios)
+    data = {'usu' : usuario}
+    return render(request, 'templateCrudUsuario/confirmar-eliminar.html', data)
+
+
+def eliminarUsuario(request, IdUsuarios):
+    usuario = Usuarios.objects.get(IdUsuarios=IdUsuarios)
+
+    if request.method == 'POST':
+        usuario.delete()
+        messages.success(request, f"El usuario '{usuario.Username}' fue eliminado correctamente.")
+        return redirect('/adminhome/crud-usuarios/')
+    else:
+        messages.error(request, "Método no permitido para eliminar usuarios.")
+        return redirect('/adminhome/crud-usuarios/')
+
+
+#Detalle
+def detalleUsuario(request, IdUsuarios):
+    usuario = Usuarios.objects.get(IdUsuarios=IdUsuarios)
+    data = {'usu' : usuario}
+    return render(request, 'templateCrudUsuario/detalle-usuario.html', data)
+
+
+SE AGREGO LA CONFIRMACIÓN DE ELIMINACIÓN
+Se heizo en base a un extend con un archivo html externo
+{% extends 'base-crud.html' %}
+{% block content %}
+<section>
+    <h1>¿Seguro que deseas eliminar la bodega: {{ bod.NombreBodega }}?</h1>
+    <button type="button" onclick="regresarCrudBodega()">VOLVER</button>
+    <form method="POST" action="{% url 'eliminar-bodega' bod.IdBodega %}">
+        {% csrf_token %}
+        <button type="submit">ELIMINAR</button>
+    </form>
+</section>
+{% endblock %}
+
+
+
+
+
+
+
+
+El sistema cuenta con una vista principal llamada renderTemplateHome que se encarga de obtener 
+el nombre de usuario almacenado en la sesión, buscarlo en la base de datos y enviar su información 
+al template correspondiente. Esta vista está protegida con un decorador que exige que el usuario esté 
+autenticado antes de acceder. Por otra parte, el formulario LoginForm define dos campos básicos, uno 
+para el nombre de usuario y otro para la contraseña, con etiquetas que facilitan el ingreso de datos. 
+
+En el template home.html se muestran los datos del usuario logeado y se despliega un panel administrativo 
+con accesos directos a los diferentes CRUD del sistema, además de un botón para cerrar sesión y un enlace a 
+la vista de auditorías. La URL auditorias define la ruta que permite acceder a la sección de auditorías, la 
+cual puede usar un decorador para restringir el acceso únicamente a administradores. En conjunto, todo el código 
+forma un panel de administración que muestra la información del usuario, permite gestionar los módulos del 
+sistema y protege el acceso mediante autenticación.

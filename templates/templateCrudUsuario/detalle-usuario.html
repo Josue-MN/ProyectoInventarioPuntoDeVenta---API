@@ -1,0 +1,82 @@
+{% extends 'base-crud.html' %}
+<!-- Extiende la plantilla base 'base-crud.html', que contiene la estructura general, estilos, scripts y mensajes de feedback -->
+
+{% block title %}Detalle de Usuario{% endblock %}
+<!-- Define el título de la página que se mostrará en la pestaña del navegador -->
+
+{% block breadcrumb %}
+    <!-- Bloque de navegación (breadcrumbs) que indica la ruta dentro del sistema -->
+    <li>
+        <a href="{% url 'adminhome' %}">Admin home > </a> <!-- Enlace a la página principal del admin -->
+        <a href="{% url 'admin-crud-usuario' %}">Crud usuarios > </a> <!-- Enlace al listado de usuarios -->
+        <a>Detalle usuario</a> <!-- Página actual, sin enlace -->
+    </li>
+{% endblock %}
+
+{% block header_title %}
+    <!-- Título principal dentro de la página -->
+    <h1 class="header-title">DETALLE DEL USUARIO</h1>
+    <!-- Botón para regresar al listado de usuarios -->
+    <a href="{% url 'admin-crud-usuario' %}">
+        <button class="button-header" type="button">VOLVER</button>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <!-- Bloque principal de contenido dinámico -->
+    <table>
+        <thead>
+            <tr>
+                <!-- Encabezados de la tabla mostrando los campos del usuario -->
+                <th>ID USUARIO</th>
+                <th>Username</th>
+                <th>Correo Electronico</th>
+                <th>Empleado Asociado</th>
+                <th>Cargo Asociado</th>
+                <th>Acciones</th> <!-- Columna para botones de acciones -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Fila con los datos del usuario actual -->
+                <td scope="row">{{ usu.IdUsuarios }}</td>
+                <td>{{ usu.Username }}</td>
+                <td>{{ usu.CorreoElectronico }}</td>
+
+                {% if usu.Username == "Admin" %}
+                    <td>NO APLICA</td>
+                {% else %}
+                    {% if usu.Empleado %}
+                        <td>{{ usu.Empleado }}</td>
+                    {% else %}
+                        <td>NO ASOCIADO</td>
+                    {% endif %}
+                {% endif %}
+
+                {% if usu.Username == "Admin" %}
+                    <td>NO APLICA</td>
+                {% else %}
+                    {% if usu.Cargo %}
+                        <td>{{ usu.Cargo }}</td>
+                    {% else %}
+                        <td>NO ASOCIADO</td>
+                    {% endif %}
+                {% endif %}
+
+                <td>
+                    <a href="{% url 'admin-actualizar-usuario' usu.IdUsuarios %}">
+                        <button>ACTUALIZAR</button>
+                    </a>
+                    
+                    {% if usu.Username == "Admin" %}
+                        <button disabled class="btn-disabled">ELIMINAR</button>
+                    {% else %}
+                        <a href="{% url 'admin-confirmar-eliminar-usuario' usu.IdUsuarios %}">
+                            <button>ELIMINAR</button>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

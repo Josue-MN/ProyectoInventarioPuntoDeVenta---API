@@ -1,0 +1,53 @@
+
+/---------------INSTALAR DJANGO---------------/
+
+(dependiendo de la version instalada de python probar con: )
+
+> python
+> python3
+> py
+
+luego en cmd poner el comando : 
+
+> python --version
+
+si python no se encuentra instalado, bajar desde este link la aplicacion.
+
+https://www.python.org/ftp/python/3.12.6/python-3.12.6-amd64.exe
+
+una vez instalada, volver a colocar el comando en cmd de:
+
+> python --version
+
+una vez ya verificado, luego en cmd poner el comando :
+
+> pip install django
+
+para verificar que la instalacion fue correcta, ejecutar en cm el siguiente comando: 
+
+> python -m django -version
+
+/---------------------------------------------/
+
+
+/--------------INICIAR APLICACION-------------/
+
+en CMD dirigirse con el comando 
+
+> cd
+
+hacia la ruta donde se descargo o se guardo el proyecto, 
+
+> cd (ruta del proyecto)
+
+una vez posicionado en la ruta, poner el siguiente comando:
+
+> python manage.py runserver
+
+esto cargara el proyecto y mostrara en cmd el link de localHost donde estara corriendo el proyecto.
+
+si se desea detener el proyecto colocar en cmd la siguiente combinacion de teclas:
+
+> ctrl + c
+
+/---------------------------------------------/

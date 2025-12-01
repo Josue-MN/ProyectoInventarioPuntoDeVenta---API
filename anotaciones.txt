@@ -1,0 +1,5 @@
+hacer que el campo tipo de cargo sea un select
+
+https://www.pythonanywhere.com/
+
+subir codigo a servidor

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <link rel="stylesheet" href="{% static 'css/home-style.css' %}">
+</head>
+<body class="inicio-div-style">
+
+<main class="parent">
+
+    <!-- DIV 1 -->
+    <div class="div1">
+
+        <img src="{% static 'images/usuario.png' %}" class="crud-user-logo">
+        
+        {% if Usuario %}
+            {% for usu in Usuario %}
+                <h1>USERNAME:</h1>
+                <h1>{{ usu.Username }}</h1>
+                <h1>CORREO ELECTRONICO:</h1>
+                <h1>{{ usu.CorreoElectronico }}</h1>
+            {% endfor %}
+        {% endif %}
+
+
+        <a href={% url 'Logout' %} class="crud-card cerrar-sesion">
+            <img src="{% static 'images/cerrar-sesion.png' %}" class="crud-icon">
+            <span>CERRAR SESIÓN</span>
+        </a>
+    </div>
+
+    <!-- DIV 2 -->
+    <div class="div2">
+        <h1 class="titulo-panel">PANEL DE HOME</h1>
+    </div>
+
+    <div class="div3">
+
+        <h2 class="titulo-cruds">Gestión del Sistema</h2>
+
+        <nav class="crud-grid">
+
+            <a href="{% url 'crud-producto' %}" class="crud-card">
+                <img src="{% static 'images/caja-de-entrega.png' %}" class="crud-icon">
+                <span>CRUD PRODUCTOS</span>
+            </a>
+
+            <a href="{% url 'crud-categoria' %}" class="crud-card">
+                <img src="{% static 'images/categorizacion.png' %}" class="crud-icon">
+                <span>CRUD CATEGORÍAS</span>
+            </a>
+
+            <a href="{% url 'crud-bodega' %}" class="crud-card">
+                <img src="{% static 'images/bodega.png' %}" class="crud-icon">
+                <span>CRUD BODEGAS</span>
+            </a>
+
+        </nav>
+
+    </div>
+
+</main>
+
+</body>
+</html>

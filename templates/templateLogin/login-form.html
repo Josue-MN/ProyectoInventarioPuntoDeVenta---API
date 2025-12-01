@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/login-style.css' %}">
+
+    <title>Iniciar Sesion</title>
+</head>
+
+<body class="{% if messages %}has-messages{% endif %}">
+
+    {% if messages %}
+        <section class="messages">
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    <!-- TODO JUNTO AQUÍ -->
+    <div class="login-container">
+
+        <header>
+            <h1>LOGIN</h1>
+        </header>
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {{ form.as_div }}
+            <input class="form-enviar" type="submit" value="ENVIAR">
+        </form>
+
+    </div>
+
+</body>
+</html>

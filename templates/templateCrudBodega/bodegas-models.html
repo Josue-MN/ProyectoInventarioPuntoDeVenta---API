@@ -1,0 +1,102 @@
+{% extends 'base-crud.html' %}
+<!-- Extiende la plantilla base de CRUD, heredando estilos, scripts y estructura general -->
+
+{% block title %}Lista de Bodegas{% endblock %}
+<!-- Título de la página que aparece en la pestaña del navegador -->
+
+{% block breadcrumb %}
+    <!-- Breadcrumb para mostrar la navegación jerárquica -->
+    <li>
+        {% if request.session.Usuario_Username == "Admin" %}
+            <a href="{% url 'adminhome' %}">Panel Admin ></a>
+            <a>Crud Bodegas > </a>
+        {% else %}
+            <a href="{% url 'home' %}">Home ></a>
+            <a>Crud Bodegas > </a>
+        {% endif %}
+    </li>
+{% endblock %}
+
+{% block header_title %}
+    <!-- Título principal de la página y botones de navegación -->
+    <h1 class="header-title">LISTA DE BODEGAS</h1>
+
+    {% if request.session.Usuario_Username == "Admin" %}
+        <a href="{% url 'adminhome' %}">
+            <button class="button-header" type="button">Volver al Panel Admin</button>
+        </a>
+    {% else %}
+        <a href="{% url 'home' %}">
+            <button class="button-header" type="button">Volver al Inicio</button>
+        </a>
+    {% endif %}
+
+    {% if request.session.Usuario_Username == "Admin" %}
+        <a href="{% url 'admin-registrar-bodega' %}">
+            <button class="button-header" type="button">REGISTRAR</button>
+        </a>
+    {% else %}
+        <a href="{% url 'registrar-bodega' %}">
+            <button class="button-header" type="button">REGISTRAR</button>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <!-- Verifica si hay bodegas registradas -->
+    {% if Bodegas %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID BODEGA</th>
+                    <th>Nombre bodega</th>
+                    <th>Ubicacion bodega</th>
+                    <th>Estado de la bodega</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Recorre todas las bodegas y muestra sus datos en filas -->
+                {% for bod in Bodegas %}
+                <tr>
+                    <td>{{ bod.IdBodega }}</td>
+                    <td>{{ bod.NombreBodega }}</td>
+                    <td>{{ bod.UbicacionBodega }}</td>
+                    <td>{{ bod.EstadoBodega }}</td>
+
+                    <!-- Botones de acción para cada bodega -->
+                    <td>
+                        {% if request.session.Usuario_Username == "Admin" %}
+                            <a href="{% url 'admin-detalle-bodega' bod.IdBodega %}">
+                                <button class="button-header" type="button">DETALLE</button>
+                            </a>
+                            <a href="{% url 'admin-actualizar-bodega' bod.IdBodega %}">
+                                <button class="button-header" type="button">ACTUALIZAR</button>
+                            </a>
+                            <a href="{% url 'admin-confirmar-eliminar-bodega' bod.IdBodega %}">
+                                <button class="button-header" type="button">ELIMINAR</button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'detalle-bodega' bod.IdBodega %}">
+                                <button class="button-header" type="button">DETALLE</button>
+                            </a>
+                            <a href="{% url 'actualizar-bodega' bod.IdBodega %}">
+                                <button class="button-header" type="button">ACTUALIZAR</button>
+                            </a>
+                            <a href="{% url 'confirmar-eliminar-bodega' bod.IdBodega %}">
+                                <button class="button-header" type="button">ELIMINAR</button>
+                            </a>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <!-- Mensaje cuando no hay bodegas registradas -->
+        <div class="no-registros">
+            <h1>NO HAY BODEGAS REGISTRADAS</h1>
+        </div>
+    {% endif %}
+{% endblock %}
