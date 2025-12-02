@@ -26,6 +26,6 @@ urlpatterns = [
     # Ruta principal del login
     # Todas las URLs definidas en LoginApp.urls se incluirán aquí
     # Al acceder a la raíz del sitio ("/") se manejarán las vistas de LoginApp
-    path('bodegas/', include('ProInvPunDeVenAPI.urls')),
+    path('', include('ProInvPunDeVenAPI.urls')),
 ]
 
