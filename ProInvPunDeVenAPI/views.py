@@ -65,7 +65,7 @@ class CargosDetail(APIView):
         except Cargos.DoesNotExist:
             return Http404
         
-    def get(self, rquest, pk):
+    def get(self, request, pk):
         cargo = self.get_object(pk)
         serializer = CargosSerializer(cargo)
         return Response(serializer.data)
@@ -83,3 +83,39 @@ class CargosDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     
+
+class CategoriaProductoList(APIView):
+    def get(self, request):
+        categoriaP = CategoriaProducto.objects.all()
+        serializer = CategoriaProductoSerializer(categoriaP, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = CategoriaProductoSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
+class CategoriaProductoDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return CategoriaProducto.objects.get(pk=pk)
+        except CategoriaProducto.DoesNotExist:
+            return Http404
+        
+    def get(self, request, pk):
+        categoriaP = self.get_object(pk)
+        serializer = CategoriaProductoSerializer(categoriaP)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        categoriaP = self.get_object(pk)
+        serializer = CategoriaProductoSerializer(categoriaP, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+    def delete(self, request, pk):
+        categoriaP = self.get_object(pk)
+        categoriaP.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

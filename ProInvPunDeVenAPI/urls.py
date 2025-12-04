@@ -6,5 +6,7 @@ urlpatterns = [
     path('bodegas/', views.BodegasList.as_view()),
     path('bodegas/<int:pk>', views.BodegasDetail.as_view()),
     path('cargos/', views.CargosList.as_view()),
-    path('cargos/<int:pk>', views.CargosDetail.as_view())
+    path('cargos/<int:pk>', views.CargosDetail.as_view()),
+    path('categoriaP/', views.CategoriaProductoList.as_view()),
+    path('categoriaP/<int:pk>', views.CategoriaProductoDetail.as_view()),
 ]

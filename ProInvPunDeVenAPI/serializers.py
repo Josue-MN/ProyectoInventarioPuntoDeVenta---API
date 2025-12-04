@@ -1,64 +1,64 @@
 from rest_framework import serializers
-from ProInvPunDeVenAPI import models
+from ProInvPunDeVenAPI.models import *
 
 class BodegasSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Bodegas
+        model = Bodegas
         fields = '__all__'
 
 class CargosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Cargos
+        model = Cargos
         fields = '__all__'
 
 class CategoriaProductoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.CategoriaProducto
+        model = CategoriaProducto
         fields = '__all__'
 
 class EmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Empleados
+        model = Empleados
         fields = '__all__'
 
 class ProductosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Productos
+        model = Productos
         fields = '__all__'
 
 class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Usuarios
+        model = Usuarios
         fields = '__all__'
 
 
 
 class AuditoriasBodegasSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AuditoriaBodega
+        model = AuditoriaBodega
         fields = '__all__'
 
 class AuditoriasCargosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AuditoriaCargo
+        model = AuditoriaCargo
         fields = '__all__'
 
 class AuditoriasCategoriaProductoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AuditoriaCategoria
+        model = AuditoriaCategoria
         fields = '__all__'
 
 class AuditoriasEmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AuditoriaEmpleado
+        model = AuditoriaEmpleado
         fields = '__all__'
 
 class AuditoriasProductosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AuditoriaProducto
+        model = AuditoriaProducto
         fields = '__all__'
 
 class AuditoriasUsuariosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AuditoriaUsuario
+        model = AuditoriaUsuario
         fields = '__all__'
