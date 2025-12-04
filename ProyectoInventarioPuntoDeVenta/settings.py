@@ -39,18 +39,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders', #SE IMPLEMENTA CORS COMO APP SEGUN EL PIP INSTALL PARA PODER USAR CORS
     'ProInvPunDeVenAPI',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', #PERMITE O BLOQUEA PETICIONES DE SITIOS EXTERNOS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+#SITIOS WEBS QUE SE LES PERMITIRA USAR LA API
+CORS_ORIGINS_ORIGINS = [
+    'http://localhost:8000'
+]
+
 
 ROOT_URLCONF = 'ProyectoInventarioPuntoDeVenta.urls'
 
