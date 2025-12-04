@@ -119,3 +119,115 @@ class CategoriaProductoDetail(APIView):
         categoriaP = self.get_object(pk)
         categoriaP.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class EmpleadosList(APIView):
+    def get(self, request):
+        empleados = Empleados.objects.all()
+        serializer = EmpleadosSerializer(empleados, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = EmpleadosSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
+class EmpleadosDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Empleados.objects.get(pk=pk)
+        except Empleados.DoesNotExist:
+            return Http404
+        
+    def get(self, request, pk):
+        empleados = self.get_object(pk)
+        serializer = EmpleadosSerializer(empleados)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        empleados = self.get_object(pk)
+        serializer = EmpleadosSerializer(empleados, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+    def delete(self, request, pk):
+        empleados = self.get_object(pk)
+        empleados.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class ProductosList(APIView):
+    def get(self, request):
+        productos = Productos.objects.all()
+        serializer = ProductosSerializer(productos, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = ProductosSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
+class ProductosDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Productos.objects.get(pk=pk)
+        except Productos.DoesNotExist:
+            return Http404
+        
+    def get(self, request, pk):
+        productos = self.get_object(pk)
+        serializer = ProductosSerializer(productos)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        productos = self.get_object(pk)
+        serializer = ProductosSerializer(productos, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+    def delete(self, request, pk):
+        productos = self.get_object(pk)
+        productos.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+class UsuariosList(APIView):
+    def get(self, request):
+        usuarios = Usuarios.objects.all()
+        serializer = UsuariosSerializer(usuarios, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = UsuariosSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
+class UsuariosDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Usuarios.objects.get(pk=pk)
+        except Usuarios.DoesNotExist:
+            return Http404
+        
+    def get(self, request, pk):
+        usuarios = self.get_object(pk)
+        serializer = UsuariosSerializer(usuarios)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        usuarios = self.get_object(pk)
+        serializer = UsuariosSerializer(usuarios, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+    def delete(self, request, pk):
+        productos = self.get_object(pk)
+        productos.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
