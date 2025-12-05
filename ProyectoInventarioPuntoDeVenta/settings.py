@@ -28,6 +28,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+##SE DEFINE EL DICCIONARIO DE COMO SE COMPORATARA EL REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' :[ #LISTA QUE ESPECIFICA EL METODO DE AUTHENTICACION QUE SE USARA
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  ##LA API usará JSON Web Tokens (JWT) para autenticar a los usuarios
+    ]
+}
+
+##
+##El backend recibe el token, verifica que sea válido y no esté expirado, 
+##luego identifica al usuario y lo asigna a request.user.
+##y Si el token es inválido o expiró, la API responde con 401 o 403
 
 # Application definition
 
