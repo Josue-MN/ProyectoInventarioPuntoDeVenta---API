@@ -2,3 +2,5 @@ pip install PyMySQL
 pip install djangorestframework
 pip install django-cors-headers
 pip install djangorestframework-simplejwt
+pip install drf-yasg
+
