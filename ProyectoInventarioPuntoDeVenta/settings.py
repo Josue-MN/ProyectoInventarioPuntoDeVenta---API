@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' :[ #LISTA QUE ESPECIFICA EL METODO DE AUTHENTICACION QUE SE USARA
         'rest_framework_simplejwt.authentication.JWTAuthentication',  ##LA API usará JSON Web Tokens (JWT) para autenticar a los usuarios
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [ #LISTA DE PERMISOSQUE SE USARA
+        'rest_framework.permissions.IsAuthenticated', #SE APLICA QUE A TODAS LAS VISTAS REQUIERAN DE TOKENS PARA FUNCIONAR
     ]
 }
 
