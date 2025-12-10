@@ -6,34 +6,47 @@ from rest_framework import status
 from rest_framework import generics, viewsets
 from django.http import Http404
 
+#SE IMPORTAN LAS CLASES DE REST_FRAMEWROK PARA CREAR UNA RUTA DE CIERRE DE SESION MEDIANTE
+#LA APIVIEW, SI ESTA AUTHENTICADO(ISAUTHENTICATED) Y LOS TOKEN DE REFRESCO (REFRESHTOKEN)
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+
+##SE IMPORTA LOS PERMISOS PARA ACCEDER A LAS VISTAS Y LA CLASES OR PARA COMPARAR DICHOS PERMISOS Y VER CUAL CORRESPONDE
+##SEGUN EL CARGO DEL USUARIO
+from ProInvPunDeVenAPI.permissions import *
+from rest_framework.permissions import OR
 
 # Create your views here.
 class BodegasViewSets(viewsets.ModelViewSet):
     queryset = Bodegas.objects.all()
     serializer_class = BodegasSerializer
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
     
 class CargosViewSets(viewsets.ModelViewSet):
     queryset = Cargos.objects.all()
     serializer_class = CargosSerializer
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
 
 class CategoriaProductoViewSets(viewsets.ModelViewSet):
     queryset = CategoriaProducto.objects.all()
     serializer_class = CategoriaProductoSerializer
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
 
 class EmpleadosViewSets(viewsets.ModelViewSet):
     queryset = Empleados.objects.all()
     serializer_class = EmpleadosSerializer
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
 
 class ProductosViewSets(viewsets.ModelViewSet):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
 
 class UsuariosViewSets(viewsets.ModelViewSet):
     queryset = Usuarios.objects.all()
     serializer_class = UsuariosSerializer
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
 
 
 
