@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     ##RUTA QUE RENUEVA EL ACCESO DADO AL USUARIO, CON ACCESO O DENEGADO
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/logout/', logoutView.as_view(), name="token_logout"),
     ##CREA LA RUTA SWAGGER SEGUN, ESPECICANDO SEGUN LA INTERFAZ CREADA SCHEMA_VIEW QUE SE QUIERE USAR
     ##LA INTERFAZ GRAFICA WITH_UI DE SWAGGER, Y QUE NO TNEGA TIEMPO PARA GENERAR CACHE Y ASI GENERAR QUE SE ACTUALICE
     ##TODOO EL TIEMPO
