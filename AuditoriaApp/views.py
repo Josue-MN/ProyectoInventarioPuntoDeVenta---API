@@ -3,13 +3,8 @@
 from django.shortcuts import render
 # Importa el modelo AuditoriaBodega, que representa la tabla donde se guardan
 # los registros de auditoría (qué pasó, en qué bodega, quién lo hizo, cuándo, etc.).
-from AuditoriaApp.models import AuditoriaBodega, AuditoriaCargo, AuditoriaCategoria, AuditoriaEmpleado, AuditoriaProducto, AuditoriaUsuario
-# Importa el modelo Usuarios para poder buscar al usuario logueado en la base de datos.
-from CrudUsuariosApp.models import Usuarios
-# Importa el decorador "solo_admin" desde la aplicación LoginApp.
-# Este decorador sirve para restringir el acceso a ciertas vistas,
-# permitiendole solo el ingreso de usuarios que tengan rol de administrador.
-from LoginApp.decorators import solo_admin
+from ProInvPunDeVenAPI.models import *
+
 
 
 def RegistrarAuditoriaBodega(request, bodega, accion):
@@ -22,25 +17,12 @@ def RegistrarAuditoriaBodega(request, bodega, accion):
     #     accion  → string que indica la acción realizada ("CREAR", "ACTUALIZAR", "ELIMINAR", etc.).
 
 
-    username = request.session.get("Usuario_Username")
-    # Obtiene el nombre de usuario que guardaste en la sesión al momento del login.
-    # Si no existe esa clave en la sesión, 'username' será None.
-
     usuario = None
-    # Inicializa la variable 'usuario' en None por defecto. Esto sirve como
-    # valor de respaldo en caso de que no se encuentre un usuario logueado
-    # o no exista en la base de datos.
 
-    if username:
-        # Si en la sesión sí había un nombre de usuario (no es None, ni cadena vacía):
-
-        usuario = Usuarios.objects.filter(Username=username).first()
-        # Se hace una consulta sobre el modelo Usuarios filtrando por Username.
-        # 'filter()' devuelve un queryset (lista de posibles usuarios).
-        # 'first()' toma el primer resultado o devuelve None si no encontró nada.
-        # Resultado:
-        #   - Si existe un usuario con ese Username → usuario = instancia de Usuarios
-        #   - Si no existe → usuario = None
+    # request.user viene de DRF/JWT
+    if request.user and request.user.is_authenticated:
+        # Aquí asumes que tu modelo Usuarios tiene el mismo username que request.user
+        usuario = Usuarios.objects.filter(Username=request.user.username).first()
 
     AuditoriaBodega.objects.create(
         Bodega=bodega,
@@ -165,23 +147,3 @@ def RegistrarAuditoriaUsuario(request, usuario, accion):
         Accion=accion
     )
 #---------------------------------------------------------------------------#
-
-@solo_admin
-def AuditoriaData(request):
-    auditoriaBodega = AuditoriaBodega.objects.all()
-    auditoriaCargo = AuditoriaCargo.objects.all()
-    auditoriaCategoria = AuditoriaCategoria.objects.all()
-    auditoriaEmpleado = AuditoriaEmpleado.objects.all()
-    auditoriaProducto = AuditoriaProducto.objects.all()
-    auditoriaUsuario = AuditoriaUsuario.objects.all()
-
-    data = {
-        'AuditoriaBodega': auditoriaBodega,
-        'AuditoriaCargo': auditoriaCargo,
-        'AuditoriaCategoria': auditoriaCategoria,
-        'AuditoriaEmpleado': auditoriaEmpleado,
-        'AuditoriaProducto': auditoriaProducto,
-        'AuditoriaUsuario': auditoriaUsuario,
-    }
-
-    return render(request, 'templateAuditoria/auditorias-mostrar.html', data)

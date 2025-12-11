@@ -14,6 +14,12 @@ router.register('categoriaProducto', CategoriaProductoViewSets)
 router.register('empleados', EmpleadosViewSets)
 router.register('productos', ProductosViewSets)
 router.register('usuarios', UsuariosViewSets)
+router.register('auditoriaBodega', AuditoriaBodegasViewSets)
+router.register('auditoriaCargo', AuditoriaCargosViewSets)
+router.register('auditoriaCategoria', AuditoriaCategoriaProductoViewSets)
+router.register('auditoriaEmpleados', AuditoriaEmpleadosViewSets)
+router.register('auditoriaProducto', AuditoriaProductosViewSets)
+router.register('auditoriaUsuario', AuditoriaUsuariosViewSets)
 
 ##SCHEMA_VIEW GENERA LA INTERFAZ GRAFICA PARA SER USADA
 schema_view = get_schema_view(
@@ -40,10 +46,6 @@ urlpatterns = [
     ##LA INTERFAZ GRAFICA WITH_UI DE SWAGGER, Y QUE NO TNEGA TIEMPO PARA GENERAR CACHE Y ASI GENERAR QUE SE ACTUALICE
     ##TODOO EL TIEMPO
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name="schema-swagger-ui"),
-    ##CREA LA RUTA REDOC SEGUN, ESPECICANDO SEGUN LA INTERFAZ CREADA SCHEMA_VIEW QUE SE QUIERE USAR
-    ##LA INTERFAZ GRAFICA WITH_UI DE REDOC, Y QUE NO TNEGA TIEMPO PARA GENERAR CACHE Y ASI GENERAR QUE SE ACTUALICE
-    ##TODOO EL TIEMPO, GENERANDO UNA INTERFAZ GRAFICA MAS ELEGANTE PARA LA VISTA DE DOCUMENTACION
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc-ui'),
     ##AGREGA TODAS LAS RUTAS CREADAS CON ROUTER
     path('', include(router.urls)),
 ]
