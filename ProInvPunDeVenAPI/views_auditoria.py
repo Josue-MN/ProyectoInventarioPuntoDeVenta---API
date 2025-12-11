@@ -1,6 +1,3 @@
-# Importa la función render (aunque en esta función no se usa directamente,
-# normalmente está en views porque otras vistas sí la usan para devolver templates)
-from django.shortcuts import render
 # Importa el modelo AuditoriaBodega, que representa la tabla donde se guardan
 # los registros de auditoría (qué pasó, en qué bodega, quién lo hizo, cuándo, etc.).
 from ProInvPunDeVenAPI.models import *

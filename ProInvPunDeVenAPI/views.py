@@ -3,8 +3,7 @@ from ProInvPunDeVenAPI.serializers import *
 from ProInvPunDeVenAPI.models import *
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import generics, viewsets
-from django.http import Http404
+from rest_framework import viewsets
 
 #SE IMPORTAN LAS CLASES DE REST_FRAMEWROK PARA CREAR UNA RUTA DE CIERRE DE SESION MEDIANTE
 #LA APIVIEW, SI ESTA AUTHENTICADO(ISAUTHENTICATED) Y LOS TOKEN DE REFRESCO (REFRESHTOKEN)

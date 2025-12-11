@@ -99,3 +99,4 @@ class EsUsuarioBodeguero(BasePermission):
 
         #PARA FINALMENTE DEVOLVER EL CARGO ADMINISTRADOR EN CASO DE QUE NO SEA USUARIO BASICO
         return (cargo == 'Administrador') or (usernameAuth == "admin")
+    

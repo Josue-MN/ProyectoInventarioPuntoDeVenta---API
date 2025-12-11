@@ -23,6 +23,8 @@ router.register('auditoriaEmpleados', AuditoriaEmpleadosViewSets)
 router.register('auditoriaProducto', AuditoriaProductosViewSets)
 router.register('auditoriaUsuario', AuditoriaUsuariosViewSets)
 
+
+
 ##SCHEMA_VIEW GENERA LA INTERFAZ GRAFICA PARA SER USADA
 schema_view = get_schema_view(
     openapi.Info(

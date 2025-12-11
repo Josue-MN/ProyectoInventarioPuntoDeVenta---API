@@ -101,6 +101,8 @@ SWAGGER_SETTINGS = {
             'description': 'Ingrese el token obtenido: '
         }
     },
+    ##DESACTIVA EL LOGIN DE DJANGO PARA LA API
+    'USE_SESSION_AUTH': False,  
 }
 
 ROOT_URLCONF = 'ProyectoInventarioPuntoDeVenta.urls'
