@@ -6,6 +6,8 @@ from drf_yasg.views import get_schema_view ##GENERA LA DOCUMENTACION MEDIANTE LA
 from drf_yasg import openapi ##IMPORTA LA ESTRUCTURA DE OPENAPI
 from rest_framework import permissions ##SE IMPORTA PARA DECIDIR A QUIEN SE LE DARA PERMISO PARA VER LA DOCUMENTACION
 
+from django.contrib import admin
+
 router = DefaultRouter() ##CONFIGURA LA CREACION DEL ROUTER, PARA LUEGO DEFINIR TODAS LAS VISTAS AUTOMATICAS CON ROUTERS Y HACER
 ##MAS AUTOMATICA LA GESTION DE GET,UPDATE,DELETE Y PUT
 router.register('bodegas', BodegasViewSets)
@@ -37,6 +39,9 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    # Ruta para el panel de administración de Django
+    # Cuando accedes a /admin/ se abre el admin predeterminado de Django
+    path('admin/', admin.site.urls),
     ##OBTIENE LOS TOKEN ACCESS Y REFRESH (USERNAME Y PASSWORD)
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     ##RUTA QUE RENUEVA EL ACCESO DADO AL USUARIO, CON ACCESO O DENEGADO

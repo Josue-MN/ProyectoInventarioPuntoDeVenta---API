@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders', #SE IMPLEMENTA CORS COMO APP SEGUN EL PIP INSTALL PARA PODER USAR CORS
     'drf_yasg', #SE IMPLEMENTA SWAGGER COMO APP SEGUN PIP INSTALL PARA PODER GENERAR DOCUMENTACION AUTOMATICA CON UNA UI
-    'AuditoriaApp',
     'ProInvPunDeVenAPI',
 ]
 

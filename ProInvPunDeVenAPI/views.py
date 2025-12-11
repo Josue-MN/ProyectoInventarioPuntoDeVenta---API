@@ -18,7 +18,7 @@ from ProInvPunDeVenAPI.permissions import *
 from rest_framework.permissions import OR
 
 
-from AuditoriaApp.views import *
+from ProInvPunDeVenAPI.views_auditoria import *
 
 # Create your views here.
 class BodegasViewSets(viewsets.ModelViewSet):
