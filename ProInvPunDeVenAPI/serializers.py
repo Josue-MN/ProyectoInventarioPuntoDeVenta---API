@@ -8,6 +8,20 @@ class BodegasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bodegas
         fields = '__all__'
+        extra_kwargs = {
+            "NombreBodega": {
+                "help_text": "ejemplo: Bodega luz"
+            },
+            "UbicacionBodega": {
+                "help_text": "ejemplo: Area norte"
+            },
+            "EstadoBodega": {
+                "help_text": "ejemplo: Activo"
+            },
+            "ObservacionesBodega": {
+                "help_text": "ejemplo: Esta bodega esta destinada a mercaderia del oasis"
+            }
+        }
 
     # ---------------------------
     # VALIDACIONES PERSONALIZADAS
@@ -72,6 +86,20 @@ class CargosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cargos
         fields = '__all__'
+        extra_kwargs = {
+            "TipoDeCargo": {
+                "help_text": "ejemplo: Bodeguero"
+            },
+            "EstadoDelCargo": {
+                "help_text": "ejemplo: Activo"
+            },
+            "DescripcionDelCargo": {
+                "help_text": "ejemplo: este cargo de bodeguero se encarga de almacenar"
+            },
+            "SueldoBase": {
+                "help_text": "ejemplo: 500000"
+            }
+        }
 
 
     # --- VALIDACIONES PERSONALIZADAS ---
@@ -97,6 +125,20 @@ class CategoriaProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoriaProducto
         fields = '__all__'
+        extra_kwargs = {
+            "NombreCategoria": {
+                "help_text": "ejemplo: Jugos"
+            },
+            "Descripcion": {
+                "help_text": "ejemplo: Esta categoria almacena jugos"
+            },
+            "Estado": {
+                "help_text": "ejemplo: Activa"
+            },
+            "Observaciones": {
+                "help_text": "ejemplo: Se neceesita almacenar los jugos por seccion"
+            }
+        }
 
     # Validación personalizada para el campo NombreCategoria
     def validate_NombreCategoria(self, value):
@@ -123,6 +165,23 @@ class EmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empleados
         fields = '__all__'
+        extra_kwargs = {
+            "RutEmpleado": {
+                "help_text": "ejemplo: Bodeguero"
+            },
+            "NombreEmpleado": {
+                "help_text": "ejemplo: Activo"
+            },
+            "ApellidoEmpleado": {
+                "help_text": "ejemplo: este cargo de bodeguero se encarga de almacenar"
+            },
+            "EdadEmpleado": {
+                "help_text": "ejemplo: 500000"
+            },
+            "NumeroTelefonoEmpleado": {
+                "help_text": "ejemplo: 12345678"
+            },
+        }
 
     # ====================================================================
     # Validaciones personalizadas
@@ -196,6 +255,27 @@ class ProductosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Productos
         fields = '__all__'
+        extra_kwargs = {
+            "CodigoDeBarras": {
+                "help_text": "ejemplo: 121212121212"
+            },
+            "ValorProducto": {
+                "help_text": "ejemplo: 10000"
+            },
+            "StockProducto": {
+                "help_text": "ejemplo: 10"
+            },
+            "NombreProducto": {
+                "help_text": "ejemplo: Bebida Juan"
+            },
+            "MarcaProducto": {
+                "help_text": "ejemplo: Bills & Paps"
+            },
+            "FechaDeVencimiento": {
+                "help_text": "ejemplo: 12/12/2050"
+            },
+
+        }
 
 
     # ====================================================================
@@ -270,6 +350,7 @@ class ProductosSerializer(serializers.ModelSerializer):
     ##ALLOW_NULL=FALSE ESPECIFICA QUE NO PUEDE QUEDAR NULO
     CategoriaProducto = serializers.PrimaryKeyRelatedField(
         queryset=CategoriaProducto.objects.all(),
+        help_text="ejemplo: 1",
         required=True,
         allow_null=False
     )
@@ -280,6 +361,7 @@ class ProductosSerializer(serializers.ModelSerializer):
     ##ALLOW_NULL=FALSE ESPECIFICA QUE NO PUEDE QUEDAR NULO
     Bodegas = serializers.PrimaryKeyRelatedField(
         queryset=Bodegas.objects.all(),
+        help_text="ejemplo: 1",
         required=True,
         allow_null=False
     )
@@ -309,6 +391,20 @@ class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
         fields = '__all__'
+        extra_kwargs = {
+            "Username": {
+                "help_text": "ejemplo: Juaneswt"
+            },
+            "Password": {
+                "help_text": "ejemplo: hola.33"
+            },
+            "CorreoElectronico": {
+                "help_text": "ejemplo: juanes@gmail.com"
+            },
+        }
+        #Hace que muestre todos los datos del modelo asociado con OneToOne en el modelo usuario de userauth
+        depth = 1
+
     
     # =============================================================================
     # VALIDACIÓN DE USERNAME
@@ -345,7 +441,7 @@ class UsuariosSerializer(serializers.ModelSerializer):
                 "La contraseña debe tener al menos 5 caracteres, 1 letra y 1 número."
             )
 
-        return valuePassword
+        return make_password(valuePassword)
 
     # =============================================================================
     # VALIDACIÓN DE FOREIGN KEYS — EMPLEADO
@@ -356,6 +452,7 @@ class UsuariosSerializer(serializers.ModelSerializer):
     ##ALLOW_NULL=FALSE ESPECIFICA QUE NO PUEDE QUEDAR NULO
     Empleado = serializers.PrimaryKeyRelatedField(
         queryset=Empleados.objects.all(),
+        help_text="ejemplo: 1",
         required=True,
         allow_null=False
     )
@@ -381,6 +478,7 @@ class UsuariosSerializer(serializers.ModelSerializer):
     ##ALLOW_NULL=FALSE ESPECIFICA QUE NO PUEDE QUEDAR NULO
     Cargo = serializers.PrimaryKeyRelatedField(
         queryset=Cargos.objects.all(),
+        help_text="ejemplo: 1",
         required=True,
         allow_null=False
     )
@@ -394,6 +492,30 @@ class UsuariosSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Debe seleccionar un cargo.")
 
         return cargo
+    
+
+
+
+    UserAuth = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        help_text="ejemplo: 1",
+        required=True,
+        allow_null=False
+    )
+    def validate_UserAuth(self, value):
+        userAuth = value
+        query = Usuarios.objects.filter(UserAuth=userAuth)
+
+        if self.instance:
+            query = query.exclude(pk=self.instance.pk)
+
+        if query.exists():
+            raise serializers.ValidationError("Este empleado ya está asignado a un usuario.")
+
+        if userAuth is None:
+            raise serializers.ValidationError("Debe seleccionar un super usuario asociado.")
+
+        return userAuth
 
 
 

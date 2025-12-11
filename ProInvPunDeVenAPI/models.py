@@ -4,6 +4,7 @@ from django.core.validators import MinLengthValidator, MinValueValidator, MaxVal
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import re
+from django.contrib.auth.models import User
 
 # Create your models here.
 # ========================================================================
@@ -190,6 +191,7 @@ class Cargos(models.Model):
     #   - 'Bodeguero'
     # --------------------------------------------------------------------
     TIPO_DE_CARGO = [
+        ('Administrador', 'Administrador'),
         ('Etiquetador', 'Etiquetador'),
         ('Bodeguero', 'Bodeguero'),
         ('Ayudante', 'Ayudante'),
@@ -955,6 +957,16 @@ class Usuarios(models.Model):
         on_delete=models.SET_NULL,
         related_name="cargo", #Para acceder a el desde categoria
         db_column="CargoId", #Nombre que tendra en la base de datos
+        null=True, #Si puede quedar nulo
+        blank=True #Si puede quedar vacio
+        #SI NULL Y BLANK QUEDAN EN FALSE LA VALIDACION PERSONALIZADA QUEDA INACTIVA
+    )
+
+    UserAuth = models.OneToOneField(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="userAuthId", #Para acceder a el desde categoria
+        db_column="superUserAsociado", #Nombre que tendra en la base de datos
         null=True, #Si puede quedar nulo
         blank=True #Si puede quedar vacio
         #SI NULL Y BLANK QUEDAN EN FALSE LA VALIDACION PERSONALIZADA QUEDA INACTIVA

@@ -64,14 +64,14 @@ from datetime import timedelta
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True, #HACE QUE CUANDO SE HACE USO DE UN TOKEN SE DEBE GENERAR UNO NUEVO
     'BLACKLIST_AFTER_ROTATION': True, #HACE QUE SE QUEDE INSERVIBLE O BLOQUEADO EL TOKEN ANTERIOR EN CASO DE USARLO POR SEGUNDA VEZ
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), #CUANTO DURA EL TOKEN DE ACCESO ANTES DE EXPIRAR
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60), #CUANTO DURA EL TOKEN DE ACCESO ANTES DE EXPIRAR
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1), #TIEMPO DE VIDA DEL TOKEN DE LOGEO, CUANDO EXPIRA SE DEBE INICAR SESION OTRA VEZ
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', #PERMITE O BLOQUEA PETICIONES DE SITIOS EXTERNOS
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', #PERMITE O BLOQUEA PETICIONES DE SITIOS EXTERNOS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -81,9 +81,27 @@ MIDDLEWARE = [
 
 #SITIOS WEBS QUE SE LES PERMITIRA USAR LA API
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000'
+    'http://localhost:3000'
 ]
 
+
+SWAGGER_SETTINGS = {
+    ##METODOS DE AUTHENTIFICACION DEFINIDOS A USAR
+    'SECURITY_DEFINITIONS': {
+        ##NOMBRE DEL METODO A USAR
+        'Bearer': {
+            ##LE ESPECIFICA A SWAGGER EL TIPO DE KEY A USAR
+            'type': 'apiKey',
+            ##SE ENVIARA EL TOKEN HEADER A AUTHORIZATION A DJANGO REST FRAMEWORK, 
+            ##EL CUAL SOLO LEE EL NOMBRE AUTHORIZATION PARA SUS METODOS
+            'name': 'Authorization',
+            ##INDICA DONDE SE ENVIARA EL IN, EN ESTE CASO EL HEADER ES UNA PETICOON HTTP
+            'in': 'header',
+            ##TEXTO QUE MUESTRA DONDE SE INGRESO EL TOKEN
+            'description': 'Ingrese el token obtenido: '
+        }
+    },
+}
 
 ROOT_URLCONF = 'ProyectoInventarioPuntoDeVenta.urls'
 

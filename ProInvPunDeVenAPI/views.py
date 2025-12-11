@@ -21,32 +21,32 @@ from rest_framework.permissions import OR
 class BodegasViewSets(viewsets.ModelViewSet):
     queryset = Bodegas.objects.all()
     serializer_class = BodegasSerializer
-    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasicos | EsUsuarioBodeguero]
     
 class CargosViewSets(viewsets.ModelViewSet):
     queryset = Cargos.objects.all()
     serializer_class = CargosSerializer
-    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
+    permission_classes = [EsUsuarioAdmin]
 
 class CategoriaProductoViewSets(viewsets.ModelViewSet):
     queryset = CategoriaProducto.objects.all()
     serializer_class = CategoriaProductoSerializer
-    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
+    permission_classes = [OR(EsUsuarioAdmin, EsUsuarioBasicos)]
 
 class EmpleadosViewSets(viewsets.ModelViewSet):
     queryset = Empleados.objects.all()
     serializer_class = EmpleadosSerializer
-    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
+    permission_classes = [EsUsuarioAdmin]
 
 class ProductosViewSets(viewsets.ModelViewSet):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
-    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
+    permission_classes = [OR(EsUsuarioAdmin, EsUsuarioBasicos)]
 
 class UsuariosViewSets(viewsets.ModelViewSet):
     queryset = Usuarios.objects.all()
     serializer_class = UsuariosSerializer
-    permission_classes = [EsUsuarioAdmin | EsUsuarioBasico]
+    permission_classes = [EsUsuarioAdmin]
 
 
 
