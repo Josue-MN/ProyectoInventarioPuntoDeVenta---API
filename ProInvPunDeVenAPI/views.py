@@ -14,8 +14,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 ##SE IMPORTA LOS PERMISOS PARA ACCEDER A LAS VISTAS Y LA CLASES OR PARA COMPARAR DICHOS PERMISOS Y VER CUAL CORRESPONDE
 ##SEGUN EL CARGO DEL USUARIO
 from ProInvPunDeVenAPI.permissions import *
-from rest_framework.permissions import OR
-
 
 from ProInvPunDeVenAPI.views_auditoria import *
 
@@ -71,7 +69,7 @@ class CargosViewSets(viewsets.ModelViewSet):
 class CategoriaProductoViewSets(viewsets.ModelViewSet):
     queryset = CategoriaProducto.objects.all()
     serializer_class = CategoriaProductoSerializer
-    permission_classes = [OR(EsUsuarioAdmin, EsUsuarioBasicos)]
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasicos]
 
     # -------------------------
     # Crear (POST)
@@ -119,7 +117,7 @@ class EmpleadosViewSets(viewsets.ModelViewSet):
 class ProductosViewSets(viewsets.ModelViewSet):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
-    permission_classes = [OR(EsUsuarioAdmin, EsUsuarioBasicos)]
+    permission_classes = [EsUsuarioAdmin | EsUsuarioBasicos]
 
     # -------------------------
     # Crear (POST)
