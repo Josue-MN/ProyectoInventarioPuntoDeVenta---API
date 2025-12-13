@@ -1,9 +1,3 @@
-"""
-ViewSets y endpoints principales de la API. Cada ViewSet expone CRUD sobre
-los modelos usando DRF, aplica permisos por rol y registra auditoria en cada
-alta, modificacion o baja. Incluye endpoint de logout que invalida el refresh.
-"""
-
 from django.shortcuts import render
 from ProInvPunDeVenAPI.serializers import *
 from ProInvPunDeVenAPI.models import *
@@ -191,6 +185,10 @@ class AuditoriaProductosViewSets(viewsets.ReadOnlyModelViewSet):
 class AuditoriaUsuariosViewSets(viewsets.ReadOnlyModelViewSet):
     queryset = AuditoriaUsuario.objects.all()
     serializer_class = AuditoriasUsuariosSerializer
+    permission_classes = [EsUsuarioAdmin]
+class authuserViewSets(viewsets.ReadOnlyModelViewSet):
+    queryset = auth_user.objects.all()
+    serializer_class = authuserSerializer
     permission_classes = [EsUsuarioAdmin]
 
 

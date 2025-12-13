@@ -1,10 +1,3 @@
-"""
-Modelos principales del dominio (bodegas, cargos, productos, usuarios, etc.)
-y tablas de auditoria asociadas. Cada modelo mapea 1:1 las tablas MySQL
-existentes, preservando nombres de columnas via db_column y agregando
-validaciones de negocio en campo para datos consistentes.
-"""
-
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator, EmailValidator
@@ -1398,3 +1391,27 @@ class AuditoriaUsuario(models.Model):
     def __str__(self):
         return f"ID: {self.IdAuditoriaUsuario},  Usuario: {self.Usuario}, Nombre Usuario: {self.UsuarioNombreRespaldo}, Accion: {self.Accion}, Fecha: {self.Fecha_hora}"
 #-----------------------------------------------------------------------------------------------------------------------------------#
+
+class auth_user(models.Model):
+    """
+    Representa los usuarios existentes en auth_user sin recrear la tabla.
+    Se utiliza para relaciones FK o referencias internas.
+    """
+    id = models.BigAutoField(primary_key=True)
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(null=True, blank=True)
+    is_superuser = models.BooleanField(default=False)
+    username = models.CharField(max_length=150, unique=True)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    email = models.EmailField(blank=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'auth_user'  # Apunta a la tabla existente de Django
+        managed = False  # No crear ni modificar la tabla en migraciones
+
+    def __str__(self):
+        return f"{self.username} ({self.email})"
