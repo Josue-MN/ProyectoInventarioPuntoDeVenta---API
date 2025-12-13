@@ -1,3 +1,10 @@
+"""
+Modelos principales del dominio (bodegas, cargos, productos, usuarios, etc.)
+y tablas de auditoria asociadas. Cada modelo mapea 1:1 las tablas MySQL
+existentes, preservando nombres de columnas via db_column y agregando
+validaciones de negocio en campo para datos consistentes.
+"""
+
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator, EmailValidator

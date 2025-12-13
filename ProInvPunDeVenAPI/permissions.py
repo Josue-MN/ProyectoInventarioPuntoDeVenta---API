@@ -1,5 +1,9 @@
-#A TRAVES DE REST_FRAMEWORK Y PERMISOS SE IMPORTA LA CLASE DE BASEPERMISSION QUE PUEDE DAR
-#O OBTENER PERMISOS DE TODOO O UN OBJECTO EN ESPECIFICO 
+"""
+Permisos personalizados por rol. Cada clase valida el Cargo asociado al
+usuario autenticado (via UserAuth) y determina que metodos HTTP puede usar.
+Admin siempre pasa; otros roles se limitan a GET o CRUD segun configuracion.
+"""
+
 from rest_framework.permissions import BasePermission
 
 #CLASE DE PERMISO QUE VALIDA QUE EL USUARIO TENGA EL ROL ADMINISTRADOR PARA DAR A CONOCEER

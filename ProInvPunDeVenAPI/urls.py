@@ -1,3 +1,9 @@
+"""
+Ruteo de la app ProInvPunDeVenAPI. Registra ViewSets via DefaultRouter,
+endpoints JWT (token, refresh, logout) y expone Swagger UI para explorar la
+API. Todas las rutas se incluyen en el proyecto principal.
+"""
+
 from django.urls import path, include
 from ProInvPunDeVenAPI.views import *
 from rest_framework.routers import DefaultRouter #IMPORTA AUTOMATICAMENTE LAS RUTAS GET,PUT,DELETE,UPDATE

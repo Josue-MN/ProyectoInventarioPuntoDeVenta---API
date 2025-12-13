@@ -1,3 +1,9 @@
+"""
+Serializers de la API: validan y normalizan la entrada/salida de los modelos,
+aplican reglas de negocio (regex, rangos, unicidad) y definen help_text para
+la documentacion Swagger. Incluye serializers de auditoria de solo lectura.
+"""
+
 from rest_framework import serializers
 from ProInvPunDeVenAPI.models import *
 import re

@@ -1,3 +1,9 @@
+"""
+ViewSets y endpoints principales de la API. Cada ViewSet expone CRUD sobre
+los modelos usando DRF, aplica permisos por rol y registra auditoria en cada
+alta, modificacion o baja. Incluye endpoint de logout que invalida el refresh.
+"""
+
 from django.shortcuts import render
 from ProInvPunDeVenAPI.serializers import *
 from ProInvPunDeVenAPI.models import *

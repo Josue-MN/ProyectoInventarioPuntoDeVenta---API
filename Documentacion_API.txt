@@ -1,0 +1,146 @@
+DOCUMENTACION EXTENDIDA - API INVENTARIO PUNTO DE VENTA
+=======================================================
+
+0) Resumen ejecutivo
+- Framework: Django 5.2.5 + DRF.
+- Auth: JWT (simplejwt) con rotacion y blacklist de refresh tokens.
+- Roles y permisos: EsUsuarioAdmin, EsUsuarioBasicos, EsUsuarioBodeguero.
+- Auditoria completa: cada CRUD registra quien, que, cuando y datos de respaldo.
+- Documentacion en vivo: Swagger /swagger/.
+- BD: MySQL. Ajustar credenciales y SECRET_KEY para prod.
+
+1) Arquitectura y archivos clave
+- Proyecto: ProyectoInventarioPuntoDeVenta
+  - settings: ProyectoInventarioPuntoDeVenta/settings.py (REST_FRAMEWORK, SIMPLE_JWT, CORS, BD).
+  - urls: ProyectoInventarioPuntoDeVenta/urls.py (incluye ProInvPunDeVenAPI.urls).
+- App API: ProInvPunDeVenAPI
+  - Modelos: ProInvPunDeVenAPI/models.py
+  - Serializers: ProInvPunDeVenAPI/serializers.py
+  - Vistas: ProInvPunDeVenAPI/views.py
+  - Permisos: ProInvPunDeVenAPI/permissions.py
+  - Auditoria helpers: ProInvPunDeVenAPI/views_auditoria.py
+  - Rutas: ProInvPunDeVenAPI/urls.py
+
+2) Modelos principales (resumen funcional)
+- Bodegas: ubicacion, estado (Activa/Inactiva/En Mantenimiento), observaciones, validacion sin caracteres especiales.
+- Cargos: tipos fijos (Administrador, Etiquetador, Bodeguero, Ayudante, Despachador), estado, descripcion, sueldo minimo 150000.
+- CategoriaProducto: nombre, descripcion, estado (Activo/Pausado), observaciones; valida longitud y caracteres.
+- Empleados: rut chileno, nombre/apellido solo letras, edad 18-99, telefono 9 digitos iniciando en 9.
+- Productos: codigo de barras unico y numerico, valor >= 1000, stock >= 1, fecha vencimiento futura, FK categoria y bodega.
+- Usuarios: username unico, password con letra+numero (se almacena hasheada), correo unico, FK Empleado, FK Cargo, OneToOne UserAuth (usuario Django para login).
+- Auditorias: una tabla por entidad; guarda FK (nullable), respaldos de campos clave, usuario que ejecuta y accion (CREAR/ACTUALIZAR/ELIMINAR/MOVIMIENTO), timestamp.
+
+3) Serializers y validaciones destacadas
+- BodegasSerializer: normaliza titulo y valida nombre/ubicacion con regex; observaciones min 10 y no solo numeros.
+- CargosSerializer: descripcion min 10, sueldo > 0.
+- CategoriaProductoSerializer: nombre >=3, descripcion/observaciones >=10.
+- EmpleadosSerializer: rut formato 12345678-9 o K y no duplicado; nombre/apellido solo letras; edad 18-100; telefono regex ^9\d{8}$.
+- ProductosSerializer: codigo de barras solo numeros y unico; valor con 3+ digitos y >0; stock >0; nombre sin caracteres especiales; fecha de vencimiento posterior a hoy; FK CategoriaProducto y Bodegas requeridas.
+- UsuariosSerializer: username min 5 letras/numeros/-/_ y unico; password min 5 con letra+numero (se hashea con make_password); evita duplicar Empleado o UserAuth en mas de un usuario de negocio; depth=1 expone datos del UserAuth vinculado.
+- Auditorias*Serializer: exponen todos los campos.
+
+4) Permisos y roles (permissions.py)
+- EsUsuarioAdmin: requiere auth y Cargo.TipoDeCargo == "Administrador" o username "admin".
+- EsUsuarioBasicos: cargos Etiquetador/Ayudante/Despachador; solo permite GET; admin siempre pasa.
+- EsUsuarioBodeguero: cargo Bodeguero permite GET/POST/PUT/PATCH/DELETE; admin siempre pasa.
+- Combinaciones por ViewSet:
+  - Bodegas: Admin | Basicos | Bodeguero (Basicos solo GET; Bodeguero CRUD; Admin total).
+  - Cargos, Empleados, Usuarios, Auditorias*: solo Admin.
+  - CategoriaProducto, Productos: Admin | Basicos (Basicos solo GET) y en Productos tambien Bodeguero (CRUD).
+
+5) Rutas y ejemplos rapidos
+- Auth
+  - POST /api/token/ -> {"username": "admin", "password": "..."} => access, refresh
+  - POST /api/token/refresh/ -> {"refresh": "<refresh>"} => nuevo access
+  - POST /api/logout/ (Auth Bearer access) -> {"refresh": "<refresh>"} => refresh a blacklist
+- CRUD via router
+  - /bodegas/, /cargos/, /categoriaProducto/, /empleados/, /productos/, /usuarios/
+  - /bodegas/{id}/, etc. (PUT/PATCH/DELETE)
+- Auditorias (solo lectura admin)
+  - /auditoriaBodega/, /auditoriaCargo/, /auditoriaCategoria/, /auditoriaEmpleados/, /auditoriaProducto/, /auditoriaUsuario/
+- Swagger
+  - GET /swagger/ (configurar Authorization: Bearer <access> en el candado de la UI).
+
+6) Ejemplos de uso (curl)
+- Obtener token
+  curl -X POST http://127.0.0.1:8000/api/token/ \
+       -H "Content-Type: application/json" \
+       -d '{"username":"admin","password":"adminpass"}'
+
+- Crear bodega (requiere rol Admin o Bodeguero con permiso de escritura)
+  curl -X POST http://127.0.0.1:8000/bodegas/ \
+       -H "Authorization: Bearer <ACCESS>" \
+       -H "Content-Type: application/json" \
+       -d '{"NombreBodega":"Bodega Norte","UbicacionBodega":"Area Norte",
+            "EstadoBodega":"Activa","ObservacionesBodega":"Bodega principal"}'
+
+- Listar productos (GET permitido a Admin, Basicos, Bodeguero)
+  curl -H "Authorization: Bearer <ACCESS>" http://127.0.0.1:8000/productos/
+
+- Crear producto (Admin o Bodeguero)
+  curl -X POST http://127.0.0.1:8000/productos/ \
+       -H "Authorization: Bearer <ACCESS>" \
+       -H "Content-Type: application/json" \
+       -d '{"CodigoDeBarras":"1234567890123","ValorProducto":2500,
+            "StockProducto":10,"NombreProducto":"Jugo Naranja",
+            "MarcaProducto":"Acme","FechaDeVencimiento":"2050-01-01",
+            "CategoriaProducto":1,"Bodegas":1}'
+
+- Cerrar sesion (invalidar refresh)
+  curl -X POST http://127.0.0.1:8000/api/logout/ \
+       -H "Authorization: Bearer <ACCESS>" \
+       -H "Content-Type: application/json" \
+       -d '{"refresh":"<REFRESH>"}'
+
+7) Flujo de autenticacion completo
+1. Credenciales -> POST /api/token/ -> recibe access (60 min) + refresh (1 dia).
+2. Consumir API con header Authorization: Bearer <access>.
+3. Si vence access, usar refresh: POST /api/token/refresh/ -> nuevo access.
+4. Logout: POST /api/logout/ con refresh; se blacklist el refresh y ya no se puede usar.
+5. Si un refresh aparece en blacklist => 401/403.
+
+8) Auditoria: que se guarda y cuando
+- Cada ViewSet usa perform_create/update/destroy para llamar a RegistrarAuditoriaX.
+- Se captura: usuario autenticado (mapeado a Usuarios via UserAuth), entidad afectada, backups (ej: Id y Nombre), accion, timestamp.
+- Ejemplo: al borrar un producto
+  - perform_destroy -> RegistrarAuditoriaProducto(request, producto, "ELIMINAR")
+  - Guarda ProductoIdRespaldo y ProductoNombreRespaldo aunque el producto se elimine luego.
+- Auditorias son de solo lectura y accesibles solo por Admin.
+
+9) Medidas de seguridad explicadas
+- JWT con rotacion y blacklist: SIMPLE_JWT rota refresh y marca el usado en lista negra, evitando reuse.
+- Permisos por rol en servidor: el cliente no decide; el backend valida Cargo asociado a userAuth.
+- Validacion de datos estricta en serializers y modelos: evita inyecciones y datos inconsistentes (regex, min/max, fechas futuras, unicidad).
+- CORS limitado a dominios locales de desarrollo; ajustar para prod.
+- Swagger sin session auth y con esquema Bearer documentado; no expone credenciales.
+- Passwords: se hashean con make_password antes de persistir; no se guardan en texto plano.
+- FK con on_delete=SET_NULL en muchas relaciones: evita cascadas accidentales; se conserva auditoria con respaldos.
+
+10) Errores comunes y respuestas
+- 400 Validacion: mensajes claros por campo (ej. "El RUT ya está registrado", "La fecha de vencimiento no puede ser anterior").
+- 401/403: sin token o sin rol adecuado.
+- 404: id inexistente en rutas detail.
+- 409/400: duplicados detectados manualmente en serializers (codigo barras, rut, username, empleado asignado).
+
+11) Checklist de despliegue
+- SECRET_KEY segura y DEBUG=False.
+- ALLOWED_HOSTS con dominio/ip real.
+- CORS_ALLOWED_ORIGINS ajustado a frontends autorizados.
+- Credenciales MySQL via variables de entorno; usuario con privilegios limitados.
+- Migraciones: python manage.py migrate.
+- Crear superusuario: python manage.py createsuperuser.
+- Revisar tiempos de token (ACCESS_TOKEN_LIFETIME, REFRESH_TOKEN_LIFETIME) segun politica.
+
+12) Como extender o personalizar
+- Roles: agregar nuevos en Cargos.TipoDeCargo y mapear en permissions.py; asignar en ViewSets.
+- Nuevas entidades: crear modelo + serializer + viewset + registrar en router + funcion de auditoria si aplica.
+- Validaciones: mantener en serializers para mensajes limpios; replicar checks de unicidad al actualizar.
+- Seguridad extra: agregar throttling DRF, HTTPS, HSTS, rotated secrets, logging centralizado.
+
+13) Prueba rapida local
+- Instalar dependencias: Django, djangorestframework, djangorestframework-simplejwt, drf-yasg, corsheaders, PyMySQL.
+- Configurar DB en settings.py.
+- python manage.py migrate
+- python manage.py createsuperuser
+- python manage.py runserver 127.0.0.1:8000
+- POST /api/token/ para obtener tokens y probar en /swagger/ con Authorization: Bearer <access>.

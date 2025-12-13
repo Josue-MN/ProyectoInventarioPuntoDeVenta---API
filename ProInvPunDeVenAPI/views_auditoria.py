@@ -1,5 +1,11 @@
-# Importa el modelo AuditoriaBodega, que representa la tabla donde se guardan
-# los registros de auditoría (qué pasó, en qué bodega, quién lo hizo, cuándo, etc.).
+"""
+Helpers de auditoria. Cada funcion RegistrarAuditoriaX recibe el request, el
+objeto afectado y la accion, resuelve el usuario autenticado (Usuarios via
+UserAuth) y persiste un registro con respaldos clave para conservar contexto
+incluso si el objeto original se elimina.
+"""
+
+# Importa los modelos de auditoria y entidades para guardar trazabilidad.
 from ProInvPunDeVenAPI.models import *
 
 
