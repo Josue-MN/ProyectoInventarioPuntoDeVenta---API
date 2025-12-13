@@ -144,3 +144,14 @@ DOCUMENTACION EXTENDIDA - API INVENTARIO PUNTO DE VENTA
 - python manage.py createsuperuser
 - python manage.py runserver 127.0.0.1:8000
 - POST /api/token/ para obtener tokens y probar en /swagger/ con Authorization: Bearer <access>.
+
+
+Instalar:
+
+pip install drf-yasg
+
+pip install djangorestframework-simplejwt
+
+pip install django-cors-headers
+
+pip install djangorestframework
